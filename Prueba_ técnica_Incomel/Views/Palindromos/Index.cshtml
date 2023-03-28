@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "Palíndromos";
+}
+
+  <div class="container mt-5">
+    <h1>Contador de palíndromos</h1>
+    <form>
+      <div class="form-group">
+        <label for="texto">Texto:</label>
+        <input type="text" class="form-control" id="texto" placeholder="Ingrese un texto">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="contarPalindromos()">Contar</button>
+    </form>
+    <div id="resultado" class="mt-3"></div>
+  </div>
+
+@section Scripts{
+    <script>
+
+      function contarPalindromos() {
+      // Obtener el texto ingresado y eliminar los espacios en blanco
+      let texto = document.getElementById("texto").value.replace(/\s/g, "");
+      
+      // Inicializar el contador de palíndromos y la lista de palíndromos
+      let contador = 0;
+      let palindromos = [];
+      
+      // Recorrer todas las subcadenas del texto
+      for (let i = 0; i < texto.length; i++) {
+        for (let j = i + 1; j <= texto.length; j++) {
+          let subcadena = texto.substr(i, j - i);
+          if (esPalindromo(subcadena) && subcadena.length > 1) {
+            contador++;
+            palindromos.push(subcadena);
+          }
+        }
+      }
+      
+      // Mostrar el resultado en la página
+      let resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = `<p>La cantidad de palíndromos es: ${contador}</p>`;
+      
+      // Mostrar la lista de palíndromos encontrados
+      if (contador > 0) {
+        let listaDiv = document.createElement("div");
+        listaDiv.innerHTML = "<p>Palíndromos encontrados:</p>";
+        let ul = document.createElement("ul");
+        for (let palindromo of palindromos) {
+          let li = document.createElement("li");
+          li.innerText = palindromo;
+          ul.appendChild(li);
+        }
+        listaDiv.appendChild(ul);
+        resultadoDiv.appendChild(listaDiv);
+      }
+    }
+    
+    function esPalindromo(cadena) {
+      // Comparar la cadena con su reverso
+      return cadena === cadena.split("").reverse().join("");
+    }
+    </script>
+}
